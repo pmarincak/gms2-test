@@ -1,0 +1,1 @@
+gmltest_start();

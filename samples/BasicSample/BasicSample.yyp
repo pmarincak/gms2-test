@@ -1,0 +1,50 @@
+{
+  "resources": [
+    {"id":{"name":"GMLTest_Helpers","path":"scripts/GMLTest_Helpers/GMLTest_Helpers.yy",},"order":0,},
+    {"id":{"name":"GMLTest_Private","path":"scripts/GMLTest_Private/GMLTest_Private.yy",},"order":3,},
+    {"id":{"name":"GMLTest_Tests","path":"scripts/GMLTest_Tests/GMLTest_Tests.yy",},"order":4,},
+    {"id":{"name":"GMLTest_Manager","path":"scripts/GMLTest_Manager/GMLTest_Manager.yy",},"order":1,},
+    {"id":{"name":"StandardTests","path":"scripts/StandardTests/StandardTests.yy",},"order":0,},
+    {"id":{"name":"GMLTest_Matchers","path":"scripts/GMLTest_Matchers/GMLTest_Matchers.yy",},"order":2,},
+    {"id":{"name":"ParameterizedTests","path":"scripts/ParameterizedTests/ParameterizedTests.yy",},"order":2,},
+    {"id":{"name":"FixtureTests","path":"scripts/FixtureTests/FixtureTests.yy",},"order":1,},
+    {"id":{"name":"MyObject","path":"objects/MyObject/MyObject.yy",},"order":0,},
+    {"id":{"name":"Room1","path":"rooms/Room1/Room1.yy",},"order":1,},
+  ],
+  "Options": [
+    {"name":"HTML5","path":"options/html5/options_html5.yy",},
+    {"name":"Linux","path":"options/linux/options_linux.yy",},
+    {"name":"macOS","path":"options/mac/options_mac.yy",},
+    {"name":"Main","path":"options/main/options_main.yy",},
+    {"name":"Windows","path":"options/windows/options_windows.yy",},
+  ],
+  "isDnDProject": false,
+  "isEcma": false,
+  "tutorialPath": "",
+  "configs": {
+    "name": "Default",
+    "children": [],
+  },
+  "RoomOrder": [
+    {"name":"Room1","path":"rooms/Room1/Room1.yy",},
+  ],
+  "Folders": [
+    {"folderPath":"folders/GMLTest.yy","order":1,"resourceVersion":"1.0","name":"GMLTest","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Sample Unit Tests.yy","order":2,"resourceVersion":"1.0","name":"Sample Unit Tests","tags":[],"resourceType":"GMFolder",},
+    {"folderPath":"folders/Supporting Resources.yy","order":4,"resourceVersion":"1.0","name":"Supporting Resources","tags":[],"resourceType":"GMFolder",},
+  ],
+  "AudioGroups": [
+    {"targets":461609314234257646,"resourceVersion":"1.0","name":"audiogroup_default","resourceType":"GMAudioGroup",},
+  ],
+  "TextureGroups": [
+    {"isScaled":true,"autocrop":true,"border":2,"mipsToGenerate":0,"targets":461609314234257646,"resourceVersion":"1.0","name":"Default","resourceType":"GMTextureGroup",},
+  ],
+  "IncludedFiles": [],
+  "MetaData": {
+    "IDEVersion": "23.1.1.168",
+  },
+  "resourceVersion": "1.3",
+  "name": "BasicSample",
+  "tags": [],
+  "resourceType": "GMProject",
+}
