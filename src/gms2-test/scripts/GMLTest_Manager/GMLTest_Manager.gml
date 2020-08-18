@@ -1,16 +1,10 @@
 ///@description Struct used to manage and execute all registered tests
 function GMLTest_Manager() constructor {
-	_tests = ds_list_create();
+	_tests = [];
 	_failCount = 0;
 	_disabledCount = 0;
 	_testCount = 0;
 	_seed = random_get_seed();
-	
-	///@description Destroys data held by the manager. 
-	///             Should be called after tests are finished executing.
-	_destroy = function() {
-		ds_list_destroy(_tests);
-	}
 	
 	///@description Get the status string for whether there was a pass or a fail
 	///@param {Bool} passed
@@ -119,11 +113,11 @@ function GMLTest_Manager() constructor {
 	
 	///@description Execute all registered tests
 	execute = function () {
-		var testCount = ds_list_size(_tests);
+		var testCount = array_length(_tests);
 		var startTime = current_time;
 		
 		for (var i = 0; i < testCount; i++){
-			var test = ds_list_find_value(_tests, i);
+			var test = _tests[i];
 			_execute_test(test);
 		}
 		
@@ -138,13 +132,11 @@ function GMLTest_Manager() constructor {
 		if (_failCount > 0){
 			show_debug_message("FAILED TESTS: " + string(_failCount));
 		}
-		
-		_destroy();
 	}
 	
 	///@description Adds a test to this manager
 	///@param {Struct} test
 	add_test = function(test){
-		ds_list_add(_tests, test);
+		array_set(_tests, array_length(_tests), test);
 	}
 }
