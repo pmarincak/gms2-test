@@ -19,7 +19,7 @@ Unit Testing Framework for Gamemaker Studio 2.3+
 
 || Supported Version |
 |--|--|
-| Gamemaker Studio 2 | v23.1.1.160 |
+| Gamemaker Studio 2 | v2.3.0.x |
 
 ## Download
 ### Local Package
@@ -31,7 +31,7 @@ Unit Testing Framework for Gamemaker Studio 2.3+
 
 ### Marketplace
 
- TBD
+This package is available for download on the [Gamemaker Marketplace](https://marketplace.yoyogames.com/assets/9280/gms2-test).
 
 ## Maintainers & Contribution
 This package is maintained by [Paige Marincak](https://twitter.com/paigemarincak/). To contribute, please fork the repo and make pull requests.
