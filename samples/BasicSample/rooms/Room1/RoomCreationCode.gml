@@ -1,1 +1,1 @@
-gmltest_start();
+gmltest_start(function(){show_debug_message("All tests are completed;"); game_end();});

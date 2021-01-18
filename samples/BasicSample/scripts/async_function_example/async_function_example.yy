@@ -2,11 +2,11 @@
   "isDnD": false,
   "isCompatibility": false,
   "parent": {
-    "name": "Sample Unit Tests",
-    "path": "folders/Sample Unit Tests.yy",
+    "name": "Supporting Resources",
+    "path": "folders/Supporting Resources.yy",
   },
   "resourceVersion": "1.0",
-  "name": "StandardTests",
+  "name": "async_function_example",
   "tags": [],
   "resourceType": "GMScript",
 }

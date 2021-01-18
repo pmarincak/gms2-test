@@ -1,7 +1,12 @@
 ///@description Creates the GMLTestManager if it does not exist
+///@param {Function} [on_conclude_callback] Do something once all tests are complete.
 function _gmltest_create_manager() {
+	var on_conclude_callback = argument_count>0 ? argument[0] : undefined;
 	if (!variable_global_exists("GMLTestManager")){
 		global.GMLTestManager = new GMLTest_Manager();
+	}
+	if(is_method(on_conclude_callback)){
+		global.GMLTestManager._on_conclude = on_conclude_callback;
 	}
 }
 

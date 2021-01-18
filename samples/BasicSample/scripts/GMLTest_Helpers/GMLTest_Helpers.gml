@@ -1,5 +1,7 @@
 ///@description Start running the unit tests
-function gmltest_start() {
+///@param {Function} [on_conclude_callback] Do something once all tests complete.
+function gmltest_start(on_conclude_callback) {
+	_gmltest_create_manager(on_conclude_callback);
 	global.GMLTestManager.execute();
 }
 

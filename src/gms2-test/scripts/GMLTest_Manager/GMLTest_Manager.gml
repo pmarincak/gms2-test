@@ -5,6 +5,8 @@ function GMLTest_Manager() constructor {
 	_disabledCount = 0;
 	_testCount = 0;
 	_seed = random_get_seed();
+	_startTime=0;
+	_on_conclude=undefined; // Callback function for when all tests have concluded.
 	
 	///@description Get the status string for whether there was a pass or a fail
 	///@param {Bool} passed
@@ -12,74 +14,47 @@ function GMLTest_Manager() constructor {
 		return passed ? "PASSED" : "FAILED";
 	}
 	
-	///@description Run a standard test
+	///@description Run test
 	///@param {Struct} test
 	_run_test = function (test){
-		var passed = true;
 		var testName = test.get_name();
 		_gmltest_log_status("RUN", testName);
 		_testCount++;
 		
-		try {
-			test._fn();
-		} catch (e){
-			passed = false;
-			_handleException(e);
+		if (test._harness != noone){
+			// If harness is set, instantiate it, call setup(), and expose its context to _fn
+			test._harness_instance = new test._harness();
+			test._harness_instance.setup();
+			test._fn = method(test._harness_instance, test._fn);
 		}
 		
-		var statusString = _get_status_string(passed);
-		_gmltest_log_status(statusString, testName);
-	}
-	
-	///@description Run a fixture test
-	///@param {Struct} test
-	_run_fixture_test = function (test){
-		var passed = true;
-		var testName = test.get_name();
-		_gmltest_log_status("RUN", testName);
-		_testCount++;
-		
-		var harness = new test._harness();
-		harness.setup();
-		var fn = method(harness, test._fn);
 		try {
-			fn();
-		} catch (e){
-			passed = false;
-			_handleException(e);
-		}
-		harness.tear_down();
-		delete harness;
-		
-		var statusString = _get_status_string(passed);
-		_gmltest_log_status(statusString, testName);
-	}
-	
-	///@description Run a parameterized test
-	///@param {Struct} test
-	_run_parameter_test = function (test){
-		for (var i = 0; i < array_length(test._array); i++){
-			var passed = true;
-			var testName = test.get_name() + "::" + string(i);
-			_gmltest_log_status("RUN", testName);
-			_testCount++;
-			
-			var harness = new test._harness();
-			harness.setup();
-			var fn = method(harness, test._fn);
-			try {
-				fn(test._array[i]);
-			} catch (e){
-				passed = false;
-				_handleException(e);
+			if(test._is_async){
+				//_fn is async, so we should pass done as a callback to it
+				if test._param  == noone{
+					test._fn(test.done); 
+				}
+				else{
+					// If param is set, pass param as the first argument
+					test._fn(test._param, test.done);
+				}
 			}
-			harness.tear_down();
-			delete harness;
-				
-			var statusString = _get_status_string(passed);
-			_gmltest_log_status(statusString, testName);
+			else{
+				//_fn is sync, so we just call done afterwards
+				if test._param  == noone{
+					test._fn(); 
+				}
+				else{
+					// If param is set, pass param as the first argument
+					test._fn(test._param);
+				}
+				test.done();
+			}
+		} catch (e){
+			// catches error if _fn's excution failed
+			test.done(e) 
 		}
-	}
+	}	
 	
 	///@description Handles any exceptions thrown during the execution of the test
 	///@param {Struct} e
@@ -93,36 +68,32 @@ function GMLTest_Manager() constructor {
 	}
 	
 	///@description Execute the provided test struct
-	///@param {Struct} test
-	_execute_test = function (test) {
+	///@param {Integer} test_index
+	_execute_test_at_index = function (_test_index) {
+		if(_test_index==array_length(_tests)){
+			// Then we have completed all tests
+			return _conclude_tests();
+		}
+		var test = _tests[_test_index];
 		if (test._disabled){
 			_disabledCount++;
 			_gmltest_log_status("DISABLED", test.get_name());
-			return;
+			return _execute_test_at_index(_test_index+1);
 		}
 		
-		if (test._harness == noone){
-			_run_test(test);
-		}else if (test._array == noone){
-			_run_fixture_test(test);
-		}
-		else {
-			_run_parameter_test(test);
-		}
+		_run_test(test);
 	}
 	
 	///@description Execute all registered tests
 	execute = function () {
-		var testCount = array_length(_tests);
-		var startTime = current_time;
-		
-		for (var i = 0; i < testCount; i++){
-			var test = _tests[i];
-			_execute_test(test);
-		}
-		
+		_startTime = current_time;
+		_execute_test_at_index(0);
+	}
+	
+	///@description Once all tests have passed, failed, or timed out, call this function.
+	_conclude_tests = function() {
 		var endTime = current_time;
-		var timeToRun = endTime - startTime;
+		var timeToRun = endTime - _startTime;
 		
 		show_debug_message("-------------------------");
 		show_debug_message("RAN " + string(_testCount) + " TESTS IN " + string(timeToRun) + "MS.");
@@ -132,11 +103,15 @@ function GMLTest_Manager() constructor {
 		if (_failCount > 0){
 			show_debug_message("FAILED TESTS: " + string(_failCount));
 		}
+		if(is_method(_on_conclude)){
+			_on_conclude();
+		}
 	}
 	
 	///@description Adds a test to this manager
 	///@param {Struct} test
 	add_test = function(test){
-		array_set(_tests, array_length(_tests), test);
+		array_push(_tests, test);
+		test._index = array_length(_tests)-1;
 	}
 }
