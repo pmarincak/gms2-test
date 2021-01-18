@@ -39,7 +39,7 @@ function _GMLTest_Test() constructor {
 
 		if(_harness_instance != noone){
 			// If any harness is instantiated, call tear_down and delete the instance.
-			_harness_instance.tear_down();
+			tear_down();
 			delete _harness_instance;
 		}
 				

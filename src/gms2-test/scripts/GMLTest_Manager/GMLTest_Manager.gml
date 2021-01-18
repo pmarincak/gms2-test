@@ -22,10 +22,12 @@ function GMLTest_Manager() constructor {
 		_testCount++;
 		
 		if (test._harness != noone){
-			// If harness is set, instantiate it, call setup(), and expose its context to _fn
+			// If harness is set, instantiate it, expose its context to _fn, and bind setup and tear_down to the test
 			test._harness_instance = new test._harness();
-			test._harness_instance.setup();
 			test._fn = method(test._harness_instance, test._fn);
+			test.setup = method(test, test._harness_instance.setup);
+			test.tear_down = method(test, test._harness_instance.tear_down);			
+			test.setup();
 		}
 		
 		try {
